@@ -6,6 +6,7 @@ import org.practise.repositories.EventRepository;
 import org.practise.repositories.UserRepository;
 import org.practise.repositories.impl.EventRepositoryFileImpl;
 import org.practise.repositories.impl.UserRepositoryFileImpl;
+import org.practise.services.AppService;
 
 import java.util.List;
 
@@ -19,14 +20,11 @@ public class App
     {
         UserRepository userRepository = new UserRepositoryFileImpl("users.txt");
         EventRepository eventRepository = new EventRepositoryFileImpl("events.txt", "events_users");
+        AppService appService = new AppService(userRepository, eventRepository);
 
         User user = userRepository.findByEmail("khalitovaidar2404@gmail.com");
-        System.out.println("Пользователь найден: " + user);
 
-        Event event = eventRepository.findByName("Практика по Golang");
-        System.out.println("Событие найдено: " + event);
-
-        List<Event> events = eventRepository.findAllByMembersContains(user);
+        List<Event> events = appService.getAllEventsByUser(user.getEmail());
         System.out.println(events.toString());
     }
 }
