@@ -19,7 +19,7 @@ public class App
     public static void main( String[] args )
     {
         UserRepository userRepository = new UserRepositoryFileImpl("users.txt");
-        EventRepository eventRepository = new EventRepositoryFileImpl("events.txt", "events_users");
+        EventRepository eventRepository = new EventRepositoryFileImpl("events.txt", "events_users.txt");
         AppService appService = new AppService(userRepository, eventRepository);
 
         User user = userRepository.findByEmail("khalitovaidar2404@gmail.com");
