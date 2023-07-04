@@ -5,6 +5,7 @@ import org.practise.repositories.UserRepository;
 
 import java.io.*;
 import java.util.List;
+import java.util.Optional;
 
 public class UserRepositoryFileImpl implements UserRepository {
     private final String fileName;
@@ -21,7 +22,7 @@ public class UserRepositoryFileImpl implements UserRepository {
         }
     }
     @Override
-    public User findByEmail(String emailUser) {
+    public Optional<User> findByEmail(String emailUser) {
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             List<String> userData;
@@ -31,16 +32,16 @@ public class UserRepositoryFileImpl implements UserRepository {
 
                 if (userData.get(1).equals(emailUser)) {
 
-                    return User.builder()
+                    return Optional.of(User.builder()
                             .id(userData.get(0))
                             .email(userData.get(1))
                             .password(userData.get(2))
-                            .build();
+                            .build());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new NullPointerException("Пользователь не найден");
+        return Optional.empty();
     }
 }
