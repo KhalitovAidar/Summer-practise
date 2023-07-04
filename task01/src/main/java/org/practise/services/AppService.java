@@ -27,7 +27,10 @@ public class AppService {
     }
 
     public List<Event> getAllEventsByUser(String email) {
-        User user = userRepository.findByEmail(email);
-        return eventRepository.findAllByMembersContains(user);
+        Optional<User> user = userRepository.findByEmail(email);
+
+        return eventRepository.findAllByMembersContains(user.orElseThrow(() -> {
+            throw new NoSuchElementException("Пользователя с таким email нет");
+        }));
     }
 }
