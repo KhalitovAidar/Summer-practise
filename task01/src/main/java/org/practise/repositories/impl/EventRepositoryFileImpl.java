@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class EventRepositoryFileImpl implements EventRepository {
     private final String fileName;
@@ -30,7 +31,7 @@ public class EventRepositoryFileImpl implements EventRepository {
     }
 
     @Override
-    public Event findByName(String nameEvent) {
+    public Optional<Event> findByName(String nameEvent) {
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             List<String> eventData;
@@ -41,21 +42,21 @@ public class EventRepositoryFileImpl implements EventRepository {
                 if (eventData.get(1).equals(nameEvent)) {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                    return Event.builder()
+                    return Optional.of(Event.builder()
                             .id(eventData.get(0))
                             .name(eventData.get(1))
                             .date(LocalDate.parse(eventData.get(2), formatter))
-                            .build();
+                            .build());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new NullPointerException("Событие не найдено");
+        return Optional.empty();
     }
 
     @Override
-    public Event findById(String id) {
+    public Optional<Event> findById(String id) {
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             List<String> eventData;
@@ -66,17 +67,17 @@ public class EventRepositoryFileImpl implements EventRepository {
                 if (eventData.get(0).equals(id)) {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                    return Event.builder()
+                    return Optional.of(Event.builder()
                             .id(eventData.get(0))
                             .name(eventData.get(1))
                             .date(LocalDate.parse(eventData.get(2), formatter))
-                            .build();
+                            .build());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new NullPointerException("Событие не найдено");
+        return Optional.empty();
     }
 
     @Override
@@ -102,7 +103,7 @@ public class EventRepositoryFileImpl implements EventRepository {
                 eventAndUserIds = List.of(line.split("\\|"));
 
                 if (eventAndUserIds.get(0).equals(id)) {
-                    Event currentEvent = findById(eventAndUserIds.get(1));
+                    Event currentEvent = findById(eventAndUserIds.get(1)).orElse(null);
                     allEvents.add(currentEvent);
                 }
             }

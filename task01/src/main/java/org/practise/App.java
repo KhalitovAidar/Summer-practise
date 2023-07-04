@@ -9,6 +9,7 @@ import org.practise.repositories.impl.UserRepositoryFileImpl;
 import org.practise.services.AppService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Hello world!
@@ -22,7 +23,10 @@ public class App
         EventRepository eventRepository = new EventRepositoryFileImpl("events.txt", "events_users.txt");
         AppService appService = new AppService(userRepository, eventRepository);
 
-        User user = userRepository.findByEmail("khalitovaidar2404@gmail.com");
+        User user = userRepository.findByEmail("khalitovaidar2404@gmail.com")
+                .orElseThrow(() -> {
+                    throw new NoSuchElementException("нет такого пользователя");
+                });
 
         List<Event> events = appService.getAllEventsByUser(user.getEmail());
         System.out.println(events.toString());
