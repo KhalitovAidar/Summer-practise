@@ -1,14 +1,14 @@
 create table shop (
       id serial primary key ,
-      name varchar(150) not null ,
+      name varchar(20) not null ,
       address varchar(200) not null
 );
 
 create table customer (
       id serial primary key ,
-      first_name varchar(100) not null ,
-      last_name varchar(100) not null ,
-      company_name varchar(150)
+      first_name varchar(20) not null ,
+      last_name varchar(20) not null ,
+      company_name varchar(20)
 );
 
 create table "order" (
@@ -36,7 +36,7 @@ create table order_product (
 
 create table shop_product (
       id serial primary key ,
-      count int check ( count > 0 ),
+      count int check ( count >= 0 ),
       shop_id int ,
       product_id int ,
       foreign key (product_id) references product(id),
