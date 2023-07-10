@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.models.Course;
 import org.example.repositories.CourseRepository;
+import org.example.repositories.springJDBCImpl.DBUtil;
 
 import java.sql.*;
 import java.time.LocalDate;

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.models.Student;
+import org.example.repositories.springJDBCImpl.DBUtil;
 import org.example.repositories.StudentRepository;
 
 import java.sql.*;
